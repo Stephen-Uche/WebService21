@@ -148,3 +148,4 @@ fabric.properties
 # Project exclude paths
 /core/target/
 /utils/target/
+/.idea/
