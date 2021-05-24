@@ -9,11 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>utils</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>ttt</module>
-    </modules>
+    <artifactId>client</artifactId>
 
     <properties>
         <maven.compiler.source>16</maven.compiler.source>

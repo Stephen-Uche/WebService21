@@ -1,14 +1,29 @@
+import java.io.*;
+import java.net.ServerSocket;
+import java.net.Socket;
+
 public class Main {
 
     public static void main(String[] args) {
+        try(ServerSocket socket = new ServerSocket(5050)){
 
-        var utils = new Utils();
+            while(true) {
+                Socket client = socket.accept();
+                System.out.println(client.getInetAddress());
+                var inputFromClient = new BufferedReader(new InputStreamReader((client.getInputStream())));
 
-        System.out.println(utils.message());
-    }
+                inputFromClient.lines().forEach(System.out::println);
 
-
-    private static Utils giveMeAnObject(){
-        return new Utils();
+                inputFromClient.close();
+                client.close();
+            }
+//            String input = "";
+//            while(input != null) {
+//                input = inputFromClient.readLine();
+//                System.out.println(input);
+//            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
