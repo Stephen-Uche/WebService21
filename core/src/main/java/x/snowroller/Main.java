@@ -3,18 +3,23 @@ package x.snowroller;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 public class Main {
 
     public static void main(String[] args) {
-        try (ServerSocket serverSocket = new ServerSocket(5050)) {
 
+        ExecutorService executorService = Executors.newCachedThreadPool();
+
+        try (ServerSocket serverSocket = new ServerSocket(5050)) {
             while (true) {
                 Socket client = serverSocket.accept();
-                //Starta tråd
-                Thread thread = new Thread(() -> handleConnection(client));
-                thread.start();
+               //Starta tråd
+               //Thread thread = new Thread(() -> handleConnection(client));
+               //thread.start();
+               executorService.submit(() -> handleConnection(client));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -24,6 +29,8 @@ public class Main {
     private static void handleConnection(Socket client) {
         try {
             System.out.println(client.getInetAddress());
+            System.out.println(Thread.currentThread().getName());
+            Thread.sleep(500);
             var inputFromClient = new BufferedReader(new InputStreamReader((client.getInputStream())));
 
             while (true) {
@@ -39,7 +46,7 @@ public class Main {
             inputFromClient.close();
             outputToClient.close();
             client.close();
-        } catch (IOException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
     }
