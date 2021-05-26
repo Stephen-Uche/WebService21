@@ -3,11 +3,17 @@ package x.snowroller;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 
 public class Main {
+
+    //Skriv en server som sparar inkommande information
+    //och sen returnerar all sparad information som svar.
+    public static List<String> billboard = new ArrayList<>();
 
     public static void main(String[] args) {
 
@@ -38,10 +44,15 @@ public class Main {
                 if (line == null || line.isEmpty()) {
                     break;
                 }
+                billboard.add(line);
                 System.out.println(line);
             }
             var outputToClient = new PrintWriter(client.getOutputStream());
-            outputToClient.print("HTTP/1.1 404 Not Found\r\nContent-length: 0\r\n\r\n");
+            //outputToClient.print("HTTP/1.1 404 Not Found\r\nContent-length: 0\r\n\r\n");
+            for (String line : billboard) {
+                outputToClient.print(line + "\r\n");
+            }
+            outputToClient.print("\r\n");
             outputToClient.flush();
             inputFromClient.close();
             outputToClient.close();
