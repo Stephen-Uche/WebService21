@@ -11,7 +11,7 @@ public class UtilsTest {
                 Host: www.example.com\r\n \
                 \r\n \
                 """);
-        assertThat(url).isEqualTo("/");
+      assertThat(url).isEqualTo("/");
     }
 
     @Test
@@ -23,4 +23,15 @@ public class UtilsTest {
                 """);
         assertThat(url).isEqualTo("/index.html");
     }
+
+    @Test
+    void filePathHeadReturnsHEADAndURL() {
+        String url = Utils.parseHttpRequestType("""
+                HEAD /index.html HTTP/1.1\r\n \
+                Host: www.example.com\r\n \
+                \r\n \
+                """);
+        assertThat(url).isEqualTo("HEAD");
+    }
+    
 }
