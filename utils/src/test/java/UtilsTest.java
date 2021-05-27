@@ -36,17 +36,28 @@ public class UtilsTest {
     }
 
     @Test
-    void requestWithOneUrlParameter() {
+    void requestTypeGetWithOneUrlParameter() {
         Request request = Utils.parseHttpRequest("""
-                POST /products?id=23 HTTP/1.1\r\n \
+                GET /products?id=23 HTTP/1.1\r\n \
+                Host: www.example.com\r\n \
+                \r\n \
+                """);
+        assertThat(request.type).isEqualTo(HTTPType.GET);
+        assertThat(request.url).isEqualTo("/products");
+        assertThat(request.urlParams).containsEntry("id","23");
+    }
+
+    @Test
+    void requestTypePOSTWithTwoUrlParameters() {
+        Request request = Utils.parseHttpRequest("""
+                POST /products?id=23&order=ascend HTTP/1.1\r\n \
                 Host: www.example.com\r\n \
                 \r\n \
                 """);
         assertThat(request.type).isEqualTo(HTTPType.POST);
         assertThat(request.url).isEqualTo("/products");
-        assertThat(request.urlParams).containsEntry("id","23");
+        assertThat(request.urlParams).containsEntry("id","23").containsEntry("order","ascend");
     }
-
 
 
     
