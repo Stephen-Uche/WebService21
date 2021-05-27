@@ -1,20 +1,21 @@
 import org.junit.jupiter.api.Test;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class UtilsTest {
 
     @Test
-    void requestTypeGetWithRootUrl(){
+    void requestTypeGetWithRootUrl() {
         var request = Utils.parseHttpRequest("""
                 GET / HTTP/1.1\r\n \
                 Host: www.example.com\r\n \
                 \r\n \
                 """);
-      assertThat(request.url).isEqualTo("/");
+        assertThat(request.url).isEqualTo("/");
     }
 
     @Test
-    void requestWithFilePath(){
+    void requestWithFilePath() {
         var request = Utils.parseHttpRequest("""
                 GET /index.html HTTP/1.1\r\n \
                 Host: www.example.com\r\n \
@@ -43,7 +44,7 @@ public class UtilsTest {
                 """);
         assertThat(request.type).isEqualTo(HTTPType.GET);
         assertThat(request.url).isEqualTo("/products");
-        assertThat(request.urlParams).containsEntry("id","23");
+        assertThat(request.urlParams).containsEntry("id", "23");
     }
 
     @Test
@@ -55,7 +56,7 @@ public class UtilsTest {
                 """);
         assertThat(request.type).isEqualTo(HTTPType.POST);
         assertThat(request.url).isEqualTo("/products");
-        assertThat(request.urlParams).containsEntry("id","23").containsEntry("order","ascend");
+        assertThat(request.urlParams).containsEntry("id", "23").containsEntry("order", "ascend");
     }
 
     @Test
@@ -67,7 +68,7 @@ public class UtilsTest {
                 """);
         assertThat(request.type).isEqualTo(HTTPType.GET);
         assertThat(request.url).isEqualTo("/products");
-        assertThat(request.urlParams).containsEntry("text","Hello there");
+        assertThat(request.urlParams).containsEntry("text", "Hello there");
     }
 
     @Test
@@ -79,7 +80,7 @@ public class UtilsTest {
                 """);
         assertThat(request.type).isEqualTo(HTTPType.GET);
         assertThat(request.url).isEqualTo("/products");
-        assertThat(request.urlParams).containsEntry("t e x t","Måste fixa");
+        assertThat(request.urlParams).containsEntry("t e x t", "Måste fixa");
     }
 
     @Test
@@ -94,8 +95,29 @@ public class UtilsTest {
         assertThat(request.urlParams).isEmpty();
     }
 
-
-
-
-    
+    //This test needs new fields on our Request object to compile.
+    //Also observe that the content in the body normaly can't be read as a string for two reasons.
+    //1. It's not always of type text/string. Might be binary data when uploading a image file.
+    //2. There is no lineending. Instead we must use the Content-Length: value
+    //   as a guide how many bytes we need to read from InputStream.
+    @Test
+    void requestPostWithJsonInBody() {
+        Request request = Utils.parseHttpRequest("""
+                POST /upload HTTP/1.1\r\n \
+                Host: localhost:5050\r\n \
+                User-Agent: insomnia/2021.3.0\r\n \
+                Cookie: JSESSIONID=490B71AEC6F7B91E31BBDB1037F53B26\r\n \
+                Content-Type: application/json\r\n \
+                Accept: */*\r\n \
+                Content-Length: 25\r\n \
+                \r\n \
+                {"name":"hej","title":12}\
+                """);
+        assertThat(request.type).isEqualTo(HTTPType.POST);
+        assertThat(request.url).isEqualTo("/upload");
+        assertThat(request.urlParams).isEmpty();
+//        assertThat(request.contentType).isEqualTo("application/json");
+//        assertThat(request.contentLength).isEqualTo(25);
+//        assertThat(request.content).isEqualTo("{\"name\":\"hej\",\"title\":12}");
+    }
 }
