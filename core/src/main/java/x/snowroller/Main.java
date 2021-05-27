@@ -11,6 +11,12 @@ import java.util.concurrent.Executors;
 
 public class Main {
 
+    //Trådar
+    //Tråd pool, ExecutorService
+    //Atomic operations
+    //Tråd säker, Thread safe
+    //synchronized
+
     public static List<String> billboard = new ArrayList<>();
 
     public static void main(String[] args) {

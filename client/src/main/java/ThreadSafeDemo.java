@@ -20,7 +20,6 @@ public class ThreadSafeDemo {
             futures[i] = executorService.submit(() -> doSomeHeavyWork());
         }
 
-
         for (var f : futures ) {
             try {
                 f.get();
