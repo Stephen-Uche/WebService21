@@ -5,33 +5,49 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class UtilsTest {
 
     @Test
-    void simpleGETReturnsUrl(){
-        String url = Utils.parseUrl("""
+    void requestTypeGetWithRootUrl(){
+        var request = Utils.parseHttpRequest("""
                 GET / HTTP/1.1\r\n \
                 Host: www.example.com\r\n \
                 \r\n \
                 """);
-      assertThat(url).isEqualTo("/");
+      assertThat(request.url).isEqualTo("/");
     }
 
     @Test
-    void filePathGETReturnsUrl(){
-        String url = Utils.parseUrl("""
+    void requestWithFilePath(){
+        var request = Utils.parseHttpRequest("""
                 GET /index.html HTTP/1.1\r\n \
                 Host: www.example.com\r\n \
                 \r\n \
                 """);
-        assertThat(url).isEqualTo("/index.html");
+        assertThat(request.url).isEqualTo("/index.html");
+        assertThat(request.type).isEqualTo(HTTPType.GET);
     }
 
     @Test
-    void filePathHeadReturnsHEADAndURL() {
-        HTTPType url = Utils.parseHttpRequestType("""
+    void requestTypeHead() {
+        Request request = Utils.parseHttpRequest("""
                 HEAD /index.html HTTP/1.1\r\n \
                 Host: www.example.com\r\n \
                 \r\n \
                 """);
-        assertThat(url).isEqualTo(HTTPType.HEAD);
+        assertThat(request.type).isEqualTo(HTTPType.HEAD);
     }
+
+    @Test
+    void requestWithOneUrlParameter() {
+        Request request = Utils.parseHttpRequest("""
+                POST /products?id=23 HTTP/1.1\r\n \
+                Host: www.example.com\r\n \
+                \r\n \
+                """);
+        assertThat(request.type).isEqualTo(HTTPType.POST);
+        assertThat(request.url).isEqualTo("/products");
+        assertThat(request.urlParams).containsEntry("id","23");
+    }
+
+
+
     
 }

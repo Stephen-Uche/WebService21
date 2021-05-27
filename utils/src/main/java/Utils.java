@@ -1,21 +1,22 @@
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
 public class Utils {
 
-    public static String parseUrl(String input) {
+    public static Request parseHttpRequest(String input) {
+
+        var request = new Request();
+        request.type = parseHttpRequestType(input);
+        request.url = parseUrl(input);
+        return request;
+    }
+
+    private static String parseUrl(String input) {
 //        int firstSpace = input.indexOf(' ') + 1;
 //        int secondSpace = input.indexOf(' ', firstSpace);
-//
 //        return input.substring(firstSpace, secondSpace);
-
         String[] result = input.split(" ");
         return result[1];
     }
 
-    public static HTTPType parseHttpRequestType(String input) {
+    private static HTTPType parseHttpRequestType(String input) {
         if (input.startsWith("G"))
             return HTTPType.GET;
         else if (input.startsWith("H"))
@@ -26,25 +27,16 @@ public class Utils {
         throw new RuntimeException("Invalid type");
     }
 
-    public Request parseHttpHeader(String input) {
-
-        var request = new Request();
-        request.type = parseHttpRequestType(input);
-        request.url = parseUrl(input);
-        return request;
-    }
-
-    public static boolean handleRequest(Request request) {
+    //Example of switch expressions to handle all possible enum cases without needing default case.
+    public static String handleRequest(Request request) {
         return switch (request.type) {
-            case GET -> true;
-            case HEAD -> false;
-            case POST -> true;
+            case GET -> "GET";
+            case HEAD -> "HEAD";
+            case POST -> "POST";
         };
     }
-
 
     public String message() {
         return "Hello from Utils";
     }
-
 }
