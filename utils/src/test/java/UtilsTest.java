@@ -100,6 +100,8 @@ public class UtilsTest {
     //1. It's not always of type text/string. Might be binary data when uploading a image file.
     //2. There is no lineending. Instead we must use the Content-Length: value
     //   as a guide how many bytes we need to read from InputStream.
+    //Maybe we should store body content as a byte[] in our request objekt.
+    //https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers
     @Test
     void requestPostWithJsonInBody() {
         Request request = Utils.parseHttpRequest("""
@@ -119,5 +121,20 @@ public class UtilsTest {
 //        assertThat(request.contentType).isEqualTo("application/json");
 //        assertThat(request.contentLength).isEqualTo(25);
 //        assertThat(request.content).isEqualTo("{\"name\":\"hej\",\"title\":12}");
+    }
+
+    //In this test we have an Authorization header in the request.
+    //Normaly used for giving the server some information from which we can be authorized to access an url.
+    @Test
+    void requestGetWithAuthorization() {
+        Request request = Utils.parseHttpRequest("""
+                GET /secret HTTP/1.1\r\n \
+                Host: localhost:5050\r\n \
+                Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c\r\n \
+                \r\n \
+                """);
+        assertThat(request.type).isEqualTo(HTTPType.GET);
+        assertThat(request.url).isEqualTo("/secret");
+//        assertThat(request.headers).containsEntry("Authorization","Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c");
     }
 }
