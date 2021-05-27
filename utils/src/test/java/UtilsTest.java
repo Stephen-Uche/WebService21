@@ -1,5 +1,4 @@
 import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class UtilsTest {
@@ -58,6 +57,21 @@ public class UtilsTest {
         assertThat(request.url).isEqualTo("/products");
         assertThat(request.urlParams).containsEntry("id","23").containsEntry("order","ascend");
     }
+
+    @Test
+    void requestTypeGETWithUrlParameterIncludingSpace() {
+        Request request = Utils.parseHttpRequest("""
+                GET /products?text=Hello+there HTTP/1.1\r\n \
+                Host: www.example.com\r\n \
+                \r\n \
+                """);
+        assertThat(request.type).isEqualTo(HTTPType.POST);
+        assertThat(request.url).isEqualTo("/products");
+        assertThat(request.urlParams).containsEntry("text","Hello there");
+    }
+
+
+
 
 
     
