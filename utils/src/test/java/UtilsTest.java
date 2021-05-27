@@ -65,11 +65,22 @@ public class UtilsTest {
                 Host: www.example.com\r\n \
                 \r\n \
                 """);
-        assertThat(request.type).isEqualTo(HTTPType.POST);
+        assertThat(request.type).isEqualTo(HTTPType.GET);
         assertThat(request.url).isEqualTo("/products");
         assertThat(request.urlParams).containsEntry("text","Hello there");
     }
 
+    @Test
+    void requestUrlWithSpaces() {
+        Request request = Utils.parseHttpRequest("""
+                GET /a%20folder/first%20document.pdf HTTP/1.1\r\n \
+                Host: www.example.com\r\n \
+                \r\n \
+                """);
+        assertThat(request.type).isEqualTo(HTTPType.GET);
+        assertThat(request.url).isEqualTo("/a folder/first document.pdf");
+        assertThat(request.urlParams).isEmpty();
+    }
 
 
 
