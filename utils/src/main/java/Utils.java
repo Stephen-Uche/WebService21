@@ -1,4 +1,7 @@
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class Utils {
 
@@ -12,8 +15,31 @@ public class Utils {
         return result[1];
     }
 
-    public static String parseHttpRequestType(String input) {
-        return input.substring(0,input.indexOf(' '));
+    public static HTTPType parseHttpRequestType(String input) {
+        if (input.startsWith("G"))
+            return HTTPType.GET;
+        else if (input.startsWith("H"))
+            return HTTPType.HEAD;
+        else if (input.startsWith("PO"))
+            return HTTPType.POST;
+
+        throw new RuntimeException("Invalid type");
+    }
+
+    public Request parseHttpHeader(String input) {
+
+        var request = new Request();
+        request.type = parseHttpRequestType(input);
+        request.url = parseUrl(input);
+        return request;
+    }
+
+    public static boolean handleRequest(Request request) {
+        return switch (request.type) {
+            case GET -> true;
+            case HEAD -> false;
+            case POST -> true;
+        };
     }
 
 

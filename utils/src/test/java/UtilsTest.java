@@ -26,12 +26,12 @@ public class UtilsTest {
 
     @Test
     void filePathHeadReturnsHEADAndURL() {
-        String url = Utils.parseHttpRequestType("""
+        HTTPType url = Utils.parseHttpRequestType("""
                 HEAD /index.html HTTP/1.1\r\n \
                 Host: www.example.com\r\n \
                 \r\n \
                 """);
-        assertThat(url).isEqualTo("HEAD");
+        assertThat(url).isEqualTo(HTTPType.HEAD);
     }
     
 }

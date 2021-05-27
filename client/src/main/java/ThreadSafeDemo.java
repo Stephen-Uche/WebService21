@@ -23,9 +23,7 @@ public class ThreadSafeDemo {
         for (var f : futures ) {
             try {
                 f.get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
+            } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
         }

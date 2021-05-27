@@ -11,11 +11,11 @@ public class Client {
             Socket socket = new Socket("localhost", 5050);
 
             var output = new PrintWriter(socket.getOutputStream());
-            output.println("Hello from Martins client");
-            output.println();
-
+            output.print("GET / HTTP/1.1\r\n");
+            output.print("Host: localhost\r\n");
+            output.print("\r\n");
             output.flush();
-            //Läs svaret från servern
+
             var inputFromServer = new BufferedReader(new InputStreamReader((socket.getInputStream())));
 
             while(true){
