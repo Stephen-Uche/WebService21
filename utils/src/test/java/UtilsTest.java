@@ -71,6 +71,18 @@ public class UtilsTest {
     }
 
     @Test
+    void requestTypeGETWithUrlParameterIncludingSpaceUsingUrlEncoding() {
+        Request request = Utils.parseHttpRequest("""
+                GET /products?t%20e%20x%20t=M%C3%A5ste%20fixa HTTP/1.1\r\n \
+                Host: www.example.com\r\n \
+                \r\n \
+                """);
+        assertThat(request.type).isEqualTo(HTTPType.GET);
+        assertThat(request.url).isEqualTo("/products");
+        assertThat(request.urlParams).containsEntry("t e x t","Måste fixa");
+    }
+
+    @Test
     void requestUrlWithSpaces() {
         Request request = Utils.parseHttpRequest("""
                 GET /a%20folder/first%20document.pdf HTTP/1.1\r\n \
