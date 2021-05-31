@@ -5,6 +5,8 @@ import com.google.gson.Gson;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,7 +36,7 @@ public class Main {
             var inputFromClient = new BufferedReader(new InputStreamReader((client.getInputStream())));
             readRequest(inputFromClient);
 
-            var outputToClient = new PrintWriter(client.getOutputStream());
+            var outputToClient = client.getOutputStream();
             sendResponse(outputToClient);
 
             inputFromClient.close();
@@ -45,7 +47,7 @@ public class Main {
         }
     }
 
-    private static void sendResponse(PrintWriter outputToClient) {
+    private static void sendResponse(OutputStream outputToClient) throws IOException {
         //Return Json information
 //        List<Person> persons = new ArrayList<>();
 //        persons.add(new Person("Martin", 43, true));
@@ -59,8 +61,13 @@ public class Main {
         String json = gson.toJson(persons);
         System.out.println(json);
 
+        byte[] data = json.getBytes(StandardCharsets.UTF_8);
 
-        outputToClient.print("HTTP/1.1 404 Not Found\r\nContent-length: 0\r\n\r\n");
+        String header = "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-length: " + data.length +"\r\n\r\n";
+
+        outputToClient.write(header.getBytes());
+        outputToClient.write(data);
+        //outputToClient.print("HTTP/1.1 404 Not Found\r\nContent-length: 0\r\n\r\n");
         outputToClient.flush();
     }
 
