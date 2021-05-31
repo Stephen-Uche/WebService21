@@ -1,9 +1,12 @@
 package x.snowroller;
 
+import com.google.gson.Gson;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -43,6 +46,20 @@ public class Main {
     }
 
     private static void sendResponse(PrintWriter outputToClient) {
+        //Return Json information
+//        List<Person> persons = new ArrayList<>();
+//        persons.add(new Person("Martin", 43, true));
+//        persons.add(new Person("Kalle", 23, false));
+//        persons.add(new Person("Anna", 11, true));
+
+        var persons = List.of(new Person("Martin", 43, true),new Person("Martin", 43, true),new Person("Martin", 43, true));
+
+        Gson gson = new Gson();
+
+        String json = gson.toJson(persons);
+        System.out.println(json);
+
+
         outputToClient.print("HTTP/1.1 404 Not Found\r\nContent-length: 0\r\n\r\n");
         outputToClient.flush();
     }
