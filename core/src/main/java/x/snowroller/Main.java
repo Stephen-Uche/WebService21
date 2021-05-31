@@ -5,10 +5,7 @@ import com.google.gson.Gson;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -34,10 +31,15 @@ public class Main {
     private static void handleConnection(Socket client) {
         try {
             var inputFromClient = new BufferedReader(new InputStreamReader((client.getInputStream())));
-            readRequest(inputFromClient);
+            var url = readRequest(inputFromClient);
 
             var outputToClient = client.getOutputStream();
-            sendResponse(outputToClient);
+            //Routing
+            if( url.equals("/cat.png"))
+                sendImageResponse(outputToClient);
+            else
+                sendJsonResponse(outputToClient);
+
 
             inputFromClient.close();
             outputToClient.close();
@@ -47,7 +49,32 @@ public class Main {
         }
     }
 
-    private static void sendResponse(OutputStream outputToClient) throws IOException {
+    private static void sendImageResponse(OutputStream outputToClient) throws IOException {
+
+        String header = "";
+        byte[] data = new byte[0];
+        File f = new File("cat.png");
+        if (!(f.exists() && !f.isDirectory())) {
+            header = "HTTP/1.1 404 Not Found\r\nContent-length: 0\r\n\r\n";
+        }
+        else
+        {
+            try(FileInputStream fileInputStream = new FileInputStream(f)){
+                data = new byte[(int) f.length()];
+                fileInputStream.read(data);
+                header = "HTTP/1.1 200 OK\r\nContent-Type: image/png\r\nContent-length: " + data.length +"\r\n\r\n";
+            }  catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        outputToClient.write(header.getBytes());
+        outputToClient.write(data);
+
+        outputToClient.flush();
+    }
+
+    private static void sendJsonResponse(OutputStream outputToClient) throws IOException {
         //Return Json information
 //        List<Person> persons = new ArrayList<>();
 //        persons.add(new Person("Martin", 43, true));
@@ -71,13 +98,18 @@ public class Main {
         outputToClient.flush();
     }
 
-    private static void readRequest(BufferedReader inputFromClient) throws IOException {
+    private static String readRequest(BufferedReader inputFromClient) throws IOException {
+        var url ="";
+
         while (true) {
             var line = inputFromClient.readLine();
+            if( line.startsWith("GET"))
+                url = line.split(" ")[1];
             if (line == null || line.isEmpty()) {
                 break;
             }
             System.out.println(line);
         }
+        return url;
     }
 }
