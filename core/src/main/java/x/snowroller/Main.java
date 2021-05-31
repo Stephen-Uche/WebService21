@@ -6,6 +6,8 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -53,7 +55,8 @@ public class Main {
 
         String header = "";
         byte[] data = new byte[0];
-        File f = new File("cat.png");
+
+        File f = Path.of("core","target","web","cat.png").toFile();
         if (!(f.exists() && !f.isDirectory())) {
             header = "HTTP/1.1 404 Not Found\r\nContent-length: 0\r\n\r\n";
         }
@@ -62,7 +65,9 @@ public class Main {
             try(FileInputStream fileInputStream = new FileInputStream(f)){
                 data = new byte[(int) f.length()];
                 fileInputStream.read(data);
-                header = "HTTP/1.1 200 OK\r\nContent-Type: image/png\r\nContent-length: " + data.length +"\r\n\r\n";
+                var contentType = Files.probeContentType(f.toPath());
+
+                header = "HTTP/1.1 200 OK\r\nContent-Type: "+contentType+"\r\nContent-length: " + data.length +"\r\n\r\n";
             }  catch (IOException e) {
                 e.printStackTrace();
             }
