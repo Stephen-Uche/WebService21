@@ -1,5 +1,5 @@
 module core {
-    requires spi;
     requires com.google.gson;
+    requires spi;
     uses spi.Greeting;
 }
