@@ -1,0 +1,3 @@
+module spi {
+    exports spi;
+}
