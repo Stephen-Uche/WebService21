@@ -1,14 +1,15 @@
+import spi.Greeting;
+
+import java.util.ServiceLoader;
+
 public class Main {
 
     public static void main(String[] args) {
 
-        var utils = new Utils();
+        ServiceLoader<Greeting> greetings = ServiceLoader.load(Greeting.class);
 
-        System.out.println(utils.message());
-    }
-
-
-    private static Utils giveMeAnObject(){
-        return new Utils();
+        for (Greeting greeting : greetings) {
+            System.out.println(greeting.greeting("Martin"));
+        }
     }
 }

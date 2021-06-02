@@ -41,7 +41,7 @@
 # CMake
 cmake-build-*/
 
-# Mongo Explorer plugin
+# Mongo Explorer plugins
 .idea/**/mongoSettings.xml
 
 # File-based project format
@@ -50,16 +50,16 @@ cmake-build-*/
 # IntelliJ
 out/
 
-# mpeltonen/sbt-idea plugin
+# mpeltonen/sbt-idea plugins
 .idea_modules/
 
-# JIRA plugin
+# JIRA plugins
 atlassian-ide-plugin.xml
 
-# Cursive Clojure plugin
+# Cursive Clojure plugins
 .idea/replstate.xml
 
-# Crashlytics plugin (for Android Studio and IntelliJ)
+# Crashlytics plugins (for Android Studio and IntelliJ)
 com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
@@ -114,7 +114,7 @@ fabric.properties
 # CMake
 cmake-build-*/
 
-# Mongo Explorer plugin
+# Mongo Explorer plugins
 .idea/**/mongoSettings.xml
 
 # File-based project format
@@ -123,16 +123,16 @@ cmake-build-*/
 # IntelliJ
 out/
 
-# mpeltonen/sbt-idea plugin
+# mpeltonen/sbt-idea plugins
 .idea_modules/
 
-# JIRA plugin
+# JIRA plugins
 atlassian-ide-plugin.xml
 
-# Cursive Clojure plugin
+# Cursive Clojure plugins
 .idea/replstate.xml
 
-# Crashlytics plugin (for Android Studio and IntelliJ)
+# Crashlytics plugins (for Android Studio and IntelliJ)
 com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
@@ -146,6 +146,5 @@ fabric.properties
 
 
 # Project exclude paths
-/core/target/
-/utils/target/
 /.idea/
+**/target/
