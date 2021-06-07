@@ -71,7 +71,7 @@ public class Main {
         String header = "";
         byte[] data = new byte[0];
 
-        File f = Path.of("core","target","web","cat.png").toFile();
+        File f = Path.of("/web/cat.png").toFile();
         if (!(f.exists() && !f.isDirectory())) {
             header = "HTTP/1.1 404 Not Found\r\nContent-length: 0\r\n\r\n";
         }
