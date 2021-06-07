@@ -1,6 +1,7 @@
 package x.snowroller;
 
 import com.google.gson.Gson;
+import utils.Utils;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -39,9 +40,10 @@ public class Main {
             //Routing
             if( url.equals("/cat.png"))
                 sendImageResponse(outputToClient);
-            else
+            else if( url.equals("/persons"))
                 sendJsonResponse(outputToClient);
-
+            else
+                sendTextResponse(outputToClient);
 
             inputFromClient.close();
             outputToClient.close();
@@ -49,6 +51,19 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private static void sendTextResponse(OutputStream outputToClient) throws IOException {
+        String header = "";
+        byte[] data = new Utils().message().getBytes();
+
+        header = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-length: " + data.length +"\r\n\r\n";
+
+        outputToClient.write(header.getBytes());
+        outputToClient.write(data);
+
+        outputToClient.flush();
+
     }
 
     private static void sendImageResponse(OutputStream outputToClient) throws IOException {

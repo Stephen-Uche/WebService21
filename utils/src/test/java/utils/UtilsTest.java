@@ -1,4 +1,9 @@
+package utils;
+
 import org.junit.jupiter.api.Test;
+import utils.HTTPType;
+import utils.Request;
+import utils.Utils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -95,7 +100,7 @@ public class UtilsTest {
         assertThat(request.urlParams).isEmpty();
     }
 
-    //This test needs new fields on our Request object to compile.
+    //This test needs new fields on our utils.Request object to compile.
     //Also observe that the content in the body normaly can't be read as a string for two reasons.
     //1. It's not always of type text/string. Might be binary data when uploading a image file.
     //2. There is no lineending. Instead we must use the Content-Length: value
