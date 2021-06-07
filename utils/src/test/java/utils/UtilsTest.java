@@ -1,5 +1,6 @@
 package utils;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import utils.HTTPType;
 import utils.Request;
@@ -7,6 +8,7 @@ import utils.Utils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Disabled
 public class UtilsTest {
 
     @Test
