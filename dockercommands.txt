@@ -1,0 +1,75 @@
+PS C:\Users\Admin\GitHub\WebService21> git remote -v
+origin  https://github.com/Stephen-Uche/WebService21.git (fetch)
+origin  https://github.com/Stephen-Uche/WebService21.git (push)
+PS C:\Users\Admin\GitHub\WebService21>
+PS C:\Users\Admin\GitHub\WebService21> docker build --tag core:1.0
+"docker build" requires exactly 1 argument.
+See 'docker build --help'.
+
+Usage:  docker build [OPTIONS] PATH | URL | -
+
+Build an image from a Dockerfile
+PS C:\Users\Admin\GitHub\WebService21> docker build --tag core:1.0
+"docker build" requires exactly 1 argument.
+See 'docker build --help'.
+
+Usage:  docker build [OPTIONS] PATH | URL | -
+
+Build an image from a Dockerfile
+PS C:\Users\Admin\GitHub\WebService21> docker build --tag core:1.0 .
+[+] Building 3.6s (9/9) FINISHED
+ => [internal] load build definition from Dockerfile                                     0.2s
+ => => transferring dockerfile: 179B                                                     0.0s
+ => [internal] load .dockerignore                                                        0.1s
+ => => transferring context: 34B                                                         0.0s
+ => [internal] load metadata for docker.io/library/eclipse-temurin:19-jre-jammy          2.5s
+ => [auth] library/eclipse-temurin:pull token for registry-1.docker.io                   0.0s
+ => [internal] load build context                                                        0.1s
+ => => transferring context: 1.34kB                                                      0.0s
+ => [1/3] FROM docker.io/library/eclipse-temurin:19-jre-jammy@sha256:02043ce07d99f4e848  0.2s
+ => => resolve docker.io/library/eclipse-temurin:19-jre-jammy@sha256:02043ce07d99f4e848  0.0s
+ => => sha256:1eb66fdf93a70ac515367106c90f5ee87ab48c14b1bc56eef60d487c0 1.16kB / 1.16kB  0.0s
+ => => sha256:50c3a29c84eee062fe8f46b6a142a4b64d34372c4c966543d30f14b3e 6.38kB / 6.38kB  0.0s
+ => => sha256:02043ce07d99f4e84844f4c7403fcbc876a7d991f73bcef2fd19c77d1 1.21kB / 1.21kB  0.0s
+ => [2/3] COPY utils/target/classes /app                                                 0.1s
+ => [3/3] COPY core/target/classes /app                                                  0.1s
+ => exporting to image                                                                   0.1s
+ => => exporting layers                                                                  0.1s
+ => => writing image sha256:f675614fb680ddda7db477b149bdbc0207b0ccea7d061e57f481e7a0a3a  0.0s
+ => => naming to docker.io/library/core:1.0                                              0.0s
+
+Use 'docker scan' to run Snyk tests against images to find vulnerabilities and learn how to fix them
+PS C:\Users\Admin\GitHub\WebService21> docker images
+REPOSITORY               TAG       IMAGE ID       CREATED         SIZE
+core                     1.0       f675614fb680   2 minutes ago   275MB
+fungover/haze            latest    cdc1e4293664   10 days ago     277MB
+redis                    latest    2f66aad5324a   2 weeks ago     117MB
+docker/getting-started   latest    3e4394f6b72f   2 months ago    47MB
+testcontainers/ryuk      0.3.4     7ac27de2f0c4   7 months ago    12MB
+PS C:\Users\Admin\GitHub\WebService21> docker run -it core:1.0
+Hello from Utils
+PS C:\Users\Admin\GitHub\WebService21> docker run -it core:1.0^C
+docker: invalid reference format.
+See 'docker run --help'.
+PS C:\Users\Admin\GitHub\WebService21> docker run -it core:1.0 .
+Hello from Utils
+PS C:\Users\Admin\GitHub\WebService21> docker build --tag core:1.0 .
+[+] Building 2.3s (9/9) FINISHED
+ => [internal] load build definition from Dockerfile                                     0.1s
+ => => transferring dockerfile: 32B                                                      0.0s
+ => [internal] load .dockerignore                                                        0.0s
+ => => transferring context: 32B                                                         0.0s
+ => [internal] load metadata for docker.io/library/eclipse-temurin:19-jre-jammy          1.8s
+ => [auth] library/eclipse-temurin:pull token for registry-1.docker.io                   0.0s
+ => [1/3] FROM docker.io/library/eclipse-temurin:19-jre-jammy@sha256:02043ce07d99f4e848  0.0s
+ => [internal] load build context                                                        0.1s
+ => => transferring context: 295B                                                        0.0s
+ => CACHED [2/3] COPY utils/target/classes /app                                          0.0s
+ => CACHED [3/3] COPY core/target/classes /app                                           0.0s
+ => exporting to image                                                                   0.1s
+ => => exporting layers                                                                  0.0s
+ => => writing image sha256:f675614fb680ddda7db477b149bdbc0207b0ccea7d061e57f481e7a0a3a  0.0s
+ => => naming to docker.io/library/core:1.0                                              0.0s
+
+Use 'docker scan' to run Snyk tests against images to find vulnerabilities and learn how to fix them
+PS C:\Users\Admin\GitHub\WebService21>
